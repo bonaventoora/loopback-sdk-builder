@@ -7,13 +7,12 @@ declare var Object: any;
 export interface AccountInterface {
   "realm"?: string;
   "username"?: string;
-  "password": string;
   "email": string;
   "emailVerified"?: boolean;
-  "verificationToken"?: string;
   "id"?: any;
   "createdAt": Date;
   "updatedAt": Date;
+  "password"?: string;
   accessTokens?: any[];
   rooms?: Room[];
   administrations?: Room[];
@@ -22,13 +21,12 @@ export interface AccountInterface {
 export class Account implements AccountInterface {
   "realm": string;
   "username": string;
-  "password": string;
   "email": string;
   "emailVerified": boolean;
-  "verificationToken": string;
   "id": any;
   "createdAt": Date;
   "updatedAt": Date;
+  "password": string;
   accessTokens: any[];
   rooms: Room[];
   administrations: Room[];
@@ -62,6 +60,8 @@ export class Account implements AccountInterface {
     return {
       name: 'Account',
       plural: 'accounts',
+      path: 'accounts',
+      idName: 'id',
       properties: {
         "realm": {
           name: 'realm',
@@ -71,10 +71,6 @@ export class Account implements AccountInterface {
           name: 'username',
           type: 'string'
         },
-        "password": {
-          name: 'password',
-          type: 'string'
-        },
         "email": {
           name: 'email',
           type: 'string'
@@ -82,10 +78,6 @@ export class Account implements AccountInterface {
         "emailVerified": {
           name: 'emailVerified',
           type: 'boolean'
-        },
-        "verificationToken": {
-          name: 'verificationToken',
-          type: 'string'
         },
         "id": {
           name: 'id',
@@ -99,22 +91,39 @@ export class Account implements AccountInterface {
           name: 'updatedAt',
           type: 'Date'
         },
+        "password": {
+          name: 'password',
+          type: 'string'
+        },
       },
       relations: {
         accessTokens: {
           name: 'accessTokens',
           type: 'any[]',
-          model: ''
+          model: '',
+          relationType: 'hasMany',
+                  keyFrom: 'id',
+          keyTo: 'userId'
         },
         rooms: {
           name: 'rooms',
           type: 'Room[]',
-          model: 'Room'
+          model: 'Room',
+          relationType: 'hasMany',
+          modelThrough: 'RoomAccount',
+          keyThrough: 'roomId',
+          keyFrom: 'id',
+          keyTo: 'accountId'
         },
         administrations: {
           name: 'administrations',
           type: 'Room[]',
-          model: 'Room'
+          model: 'Room',
+          relationType: 'hasMany',
+          modelThrough: 'RoomAdmin',
+          keyThrough: 'roomId',
+          keyFrom: 'id',
+          keyTo: 'administrationId'
         },
       }
     }

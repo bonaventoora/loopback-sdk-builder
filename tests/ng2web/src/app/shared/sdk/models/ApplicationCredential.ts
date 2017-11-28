@@ -53,6 +53,8 @@ export class ApplicationCredential implements ApplicationCredentialInterface {
     return {
       name: 'ApplicationCredential',
       plural: 'application-credentials',
+      path: 'application-credentials',
+      idName: 'id',
       properties: {
         "provider": {
           name: 'provider',
